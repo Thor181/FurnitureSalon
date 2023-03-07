@@ -1,0 +1,131 @@
+﻿<Window x:Class="FurnitureSalon.OrderListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FurnitureSalon"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Список заказов" Height="450" Width="1400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.RowSpan="1" Orientation="Horizontal" >
+            <Grid Margin="5,0" Grid.RowSpan="1">
+                <TextBox x:Name="searchTextbox" TextChanged="searchTextbox_TextChanged" Width="150"  
+                             VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" Cursor="IBeam"/>
+                <TextBlock IsHitTestVisible="False" Text="Поиск..." VerticalAlignment="Center" 
+                               HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="DarkGray">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=searchTextbox}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+            <Button
+                x:Name="AddOrderButton"               
+                Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                Margin="10,5"
+                Content="Оформить заказ" FontSize="12"
+                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                Click="AddOrderButton_Click"
+                Cursor="Hand"/>
+            <DatePicker x:Name="DateStartPicker" SelectedDateChanged="DateStartPicker_SelectedDateChanged"
+                  Width="140" Margin="5,0" HorizontalAlignment="Right"
+                  materialDesign:HintAssist.Hint="С"
+                  Style="{StaticResource MaterialDesignFilledDatePicker}" />
+            <DatePicker x:Name="DateEndPicker" SelectedDateChanged="DateEndPicker_SelectedDateChanged"
+                  Width="140" Margin="5,0" HorizontalAlignment="Right"
+                  materialDesign:HintAssist.Hint="По"
+                  Style="{StaticResource MaterialDesignFilledDatePicker}" />
+            <Button x:Name="OrdersOfDateButton"
+                  HorizontalAlignment="Right"              
+                Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                Margin="10,5"
+                Content="Заказы за период" FontSize="12"
+                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                Click="OrdersOfDateButton_Click"
+                Cursor="Hand"/>
+            <Button x:Name="PrintReportButton"
+                HorizontalAlignment="Right"              
+                Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                Margin="10,5"
+                Content="Печать текущего" FontSize="12"
+                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                Click="PrintReportButton_Click"
+                Cursor="Hand"/>
+            <Button x:Name="PrintReportConsumerButton"
+                HorizontalAlignment="Right"              
+                Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                Margin="10,5"
+                Content="Печать статистики покупателей" FontSize="12"
+                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                Click="PrintReportConsumerButton_Click"
+                Cursor="Hand"/>
+            <Button x:Name="PrintReportFurnitureButton"
+                HorizontalAlignment="Right"              
+                Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                Margin="10,5"
+                Content="Печать статистики мебели" FontSize="12"
+                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                Click="PrintReportFurnitureButton_Click"
+                Cursor="Hand"/>
+        </StackPanel>
+
+        <DataGrid x:Name="OrdersListDataGrid" AutoGenerateColumns="False" VerticalContentAlignment="Center" 
+                  HorizontalContentAlignment="Center" CanUserDeleteRows="False" CanUserAddRows="False" 
+                  Grid.Row="1" BorderThickness="2" BorderBrush="Black" >
+            <DataGrid.Resources>
+                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                    <Setter Property="Background" Value="LightGray"></Setter>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Дата продажи" Binding="{Binding date_selling, StringFormat='{}{0: dd.MM.yyyy HH.mm}'}"/>
+                <DataGridTemplateColumn Header="Мебель">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0}: {1}">
+                                        <Binding Path="FurnitureList.FurnitureType.furniture_type" />
+                                        <Binding Path="FurnitureList.FurnitureName.furniture_name" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Количество мебели" Binding="{Binding count_product}"/>
+                <DataGridTemplateColumn Header="Покупатель">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} {1} {2}">
+                                        <Binding Path="ConsumerList.surname" />
+                                        <Binding Path="ConsumerList.name" />
+                                        <Binding Path="ConsumerList.patronymic" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Стоимость доставки" Binding="{Binding deliver_price, StringFormat='{}{0:#.##}'}"/>
+                <DataGridTextColumn Header="Стоимость сборки и установки" Binding="{Binding installation_price, StringFormat='{}{0:#.##}'}"/>
+                <DataGridTextColumn Header="Скидка" Binding="{Binding discount}"/>
+                <DataGridTextColumn Header="Итоговая стоимость" Binding="{Binding total_sum, StringFormat='{}{0:#.##}'}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

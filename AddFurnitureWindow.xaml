@@ -1,0 +1,122 @@
+﻿<Window x:Class="FurnitureSalon.AddFurnitureWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FurnitureSalon"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Добавить мебель" Height="450" Width="1048" ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="281*"/>
+            <ColumnDefinition Width="243*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel >
+            <TextBlock x:Name="headingLabel" Text="Добавление мебели в базу" HorizontalAlignment="Center" FontSize="30"></TextBlock>
+            <GroupBox Header="Тип мебели" Margin="20, 10" Width="444">
+                <StackPanel>
+
+                    <ComboBox x:Name="typeFurnitureCombobox" Margin="20,5" Width="350" >
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding furniture_type}"></TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,40,5">
+                        
+                        <CheckBox x:Name="enabledOtherTypeCheckbox" VerticalAlignment="Bottom" Margin="0,0,0,6">
+                            <CheckBox.RenderTransform>
+                                <ScaleTransform ScaleX="1.2" ScaleY="1.2"></ScaleTransform>
+                            </CheckBox.RenderTransform>
+                        </CheckBox>
+                        
+                        <TextBox
+                            x:Name="typeFurnitureTextbox"
+                            IsEnabled="{Binding ElementName=enabledOtherTypeCheckbox, Path=IsChecked, Mode=TwoWay}"
+                            materialDesign:HintAssist.Hint="Свой тип мебели"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            VerticalAlignment="Center" HorizontalAlignment="Center" Width="335"
+                            Margin="5,5,0,0">
+                        </TextBox>
+
+                    </StackPanel>
+
+                </StackPanel>
+                
+            </GroupBox>
+
+            <GroupBox Header="Наименование мебели" Margin="20, 10" Width="444">
+                
+                <StackPanel>
+
+                    <ComboBox x:Name="nameFurnitureCombobox" Margin="20,5" Width="350" >
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding furniture_name}"></TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox >
+                    
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,40,5">
+                        
+                        <CheckBox x:Name="enabledOtherNameCheckbox" VerticalAlignment="Bottom" Margin="0,0,0,6">
+                            <CheckBox.RenderTransform>
+                                <ScaleTransform ScaleX="1.2" ScaleY="1.2"></ScaleTransform>
+                            </CheckBox.RenderTransform>
+                        </CheckBox>
+                        
+                        <TextBox
+                            x:Name="nameFurnitureTextbox"
+                            IsEnabled="{Binding ElementName=enabledOtherNameCheckbox, Path=IsChecked, Mode=TwoWay}"
+                            materialDesign:HintAssist.Hint="Своё наименование мебели"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            VerticalAlignment="Center" HorizontalAlignment="Center" Width="335"
+                            Margin="5,5,0,0">
+                        </TextBox>
+                        
+                    </StackPanel>
+
+                </StackPanel>
+                
+            </GroupBox>
+
+
+            <TextBox
+                x:Name="priceTextbox"
+                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                Height="48" Width="154"
+                AcceptsReturn="True"
+                TextWrapping="Wrap"
+                materialDesign:HintAssist.Hint="Цена за единицу" Cursor="IBeam">
+                
+            </TextBox>
+            
+
+        </StackPanel>
+        
+        <StackPanel Grid.Column="1">
+            <Grid MouseLeftButtonDown="Grid_MouseLeftButtonDown" 
+              HorizontalAlignment="Center" 
+              VerticalAlignment="Top"
+              Margin="0,25,0,0">
+                <Rectangle Fill="Gray" Height="300" Width="300" />
+                <Rectangle Fill="White" Height="290" Width="290"/>
+                <Rectangle Fill="White" Height="310" Width="250"/>
+                <Rectangle Fill="White" Height="250" Width="310"/>
+                <TextBlock Style="{StaticResource MaterialDesignHeadline3TextBlock}" Foreground="Gray" 
+                           Text="Нажмите здесь, чтобы загрузить фото" FontSize="40" HorizontalAlignment="Center"
+                           VerticalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Width="250" 
+                           TextTrimming="None">
+                </TextBlock>
+                <Image x:Name="PlaceForPhoto" Margin="15,15"  MaxHeight="190" MaxWidth="190"/>
+            </Grid>
+
+            <Button x:Name="AddFurnitureButton" Content="Добавить" Margin="10,35" Click="AddFurnitureButton_Click" ></Button>
+            
+        </StackPanel>
+
+    </Grid>
+</Window>

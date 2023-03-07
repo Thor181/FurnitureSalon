@@ -1,0 +1,40 @@
+﻿<Window x:Class="FurnitureSalon.AddConsumerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FurnitureSalon"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="AddConsumerWindow" Height="360" Width="300">
+
+    <Grid>
+        <GroupBox Margin="15" Header="ФИО покупателя" >
+            <StackPanel>
+                <TextBox
+                x:Name="surnameTextbox"
+                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                Height="48" Width="154" Margin="5"
+                AcceptsReturn="True"
+                TextWrapping="Wrap"
+                materialDesign:HintAssist.Hint="Фамилия" Cursor="IBeam"/>
+                <TextBox
+                x:Name="nameTextbox"
+                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                Height="48" Width="154" Margin="5"
+                AcceptsReturn="True"
+                TextWrapping="Wrap"
+                materialDesign:HintAssist.Hint="Имя" Cursor="IBeam"/>
+                <TextBox
+                x:Name="patronymicTextbox"
+                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                Height="48" Width="154" Margin="5"
+                AcceptsReturn="True"
+                TextWrapping="Wrap"
+                materialDesign:HintAssist.Hint="Отчество" Cursor="IBeam"/>
+                <Button x:Name="AddConsumerButton" Margin="20" Content="Добавить в базу" Click="AddConsumerButton_Click"
+                        Style="{StaticResource MaterialDesignFlatDarkBgButton}"/>
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</Window>

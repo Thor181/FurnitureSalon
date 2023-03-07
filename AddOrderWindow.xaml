@@ -1,0 +1,128 @@
+﻿<Window x:Class="FurnitureSalon.AddOrderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FurnitureSalon"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Оформить заказ" Height="520" Width="410" MinHeight="520" MinWidth="410" MaxHeight="520" MaxWidth="410">
+
+    <Window.Resources>
+        <Style TargetType="GroupBox" BasedOn="{StaticResource MaterialDesignCardGroupBox}"></Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="172*"></RowDefinition>
+            <RowDefinition Height="61*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.ColumnSpan="1">
+            <GroupBox Header="Покупатель" Margin="7">
+                <StackPanel>
+                    <ComboBox x:Name="ConsumerListCombobox">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat='{}{0} {1} {2}'>
+                                            <Binding Path="surname"></Binding>
+                                            <Binding Path="name"></Binding>
+                                            <Binding Path="patronymic"></Binding>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button x:Name="NewConsumerButton" Content="Новый покупатель" Margin="0,10" Click="NewConsumerButton_Click"
+                            Style="{StaticResource MaterialDesignFlatDarkBgButton}"></Button>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Мебель" Margin="7" Height="190.7">
+                <StackPanel>
+                    <ComboBox x:Name="FurnitureCombobox" ToolTip="Выбрать мебель" Margin="0,5" SelectionChanged="FurnitureCombobox_SelectionChanged">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0}: {1}">
+                                            <Binding Path="FurnitureType.furniture_type"></Binding>
+                                            <Binding Path="FurnitureName.furniture_name"></Binding>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <ComboBox x:Name="FurnitureCountCombobox" SelectionChanged="FurnitureCountCombobox_SelectionChanged"
+                      materialDesign:HintAssist.Hint="Количество"
+                      ItemsSource="{Binding LongListToTestComboVirtualization}"
+                      Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                        <ComboBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ComboBox.ItemsPanel>
+                    </ComboBox>
+                    <TextBox x:Name="totalSumFurnitureBox"
+                            materialDesign:HintAssist.Hint="Стоимость мебели"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            VerticalAlignment="Center" 
+                            IsEnabled="False">
+                    </TextBox>
+                </StackPanel>
+            </GroupBox>
+
+        </StackPanel>
+        <StackPanel Grid.Column="1" >
+
+            <GroupBox Margin="7" VerticalAlignment="Top" Grid.Column="1" Header="Доставка и установка" Height="170" >
+                <StackPanel>
+                    <TextBox
+                    x:Name="deliverPriceTextbox" TextChanged="deliverPriceTextbox_TextChanged"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Height="48" Width="154" Margin="5"
+                    AcceptsReturn="False"
+                    TextWrapping="Wrap"
+                    materialDesign:HintAssist.Hint="Стоимость доставки" Cursor="IBeam"/>
+                    <TextBox
+                    x:Name="installationPriceTextbox" TextChanged="installationPriceTextbox_TextChanged"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Height="48" Width="154" Margin="5"
+                    AcceptsReturn="False"
+                    TextWrapping="Wrap"
+                    materialDesign:HintAssist.Hint="Стоимость установки" Cursor="IBeam"/>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Скидка" Margin="7">
+                <StackPanel>
+                    <RadioButton x:Name="discount0RadioButton" Content="Отсутствует" IsChecked="True" Checked="SetDiscount"/>
+                    <RadioButton x:Name="discount10RadioButton" Content="10%" Checked="SetDiscount"/>
+                    <RadioButton x:Name="discount15RadioButton" Content="15%" Checked="SetDiscount"/>
+                    <TextBox
+                        x:Name="discountOtherTextbox" TextChanged="discountOtherTextbox_TextChanged"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                        Height="35" Width="154" Margin="0,5" Padding="5,10,0,0"
+                        AcceptsReturn="False" 
+                        TextWrapping="NoWrap"
+                        materialDesign:HintAssist.Hint="Иная скидка..." Cursor="IBeam"/>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" >
+
+            <TextBox x:Name="TotalOrderSumBox" 
+                                materialDesign:HintAssist.Hint="Стоимость заказа" FontSize="20" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                IsEnabled="False" Grid.ColumnSpan="2" Margin="50,10,50,0" Grid.Row="1" Height="56"/>
+            <Button x:Name="AddOrderButton" Content="Оформить заказ" Margin="30,10" Click="AddOrderButton_Click"
+                                Style="{StaticResource MaterialDesignFlatDarkBgButton}"></Button>
+        </StackPanel>
+    </Grid>
+</Window>
